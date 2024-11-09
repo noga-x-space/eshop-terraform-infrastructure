@@ -11,6 +11,10 @@ FROM
 WHERE 
     c.contype = 'f';
 
+CREATE SEQUENCE IF NOT EXISTS public.categories_category_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.ratings_rating_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.purchases_purchase_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.purchasedetails_purchase_details_id_seq;
 
 -- Table: public.categories
 
