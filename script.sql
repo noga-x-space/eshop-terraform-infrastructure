@@ -1,3 +1,50 @@
+SELECT 
+    conname AS constraint_name,
+    conrelid::regclass AS table_name,
+    a.attname AS column_name,
+    confrelid::regclass AS foreign_table_name,
+    af.attname AS foreign_column_name
+FROM 
+    pg_constraint AS c
+    JOIN pg_attribute AS a ON a.attnum = ANY(c.conkey)
+    JOIN pg_attribute AS af ON af.attnum = ANY(c.confkey)
+WHERE 
+    c.contype = 'f';
+
+
+-- Table: public.categories
+
+-- DROP TABLE IF EXISTS public.categories;
+
+CREATE TABLE IF NOT EXISTS public.categories
+(
+    category_id integer NOT NULL DEFAULT nextval('categories_category_id_seq'::regclass),
+    category character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT categories_pkey PRIMARY KEY (category_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.categories
+    OWNER to postgres;
+
+
+-- Table: public.users
+
+-- DROP TABLE IF EXISTS public.users;
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    user_name character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    hashed_password character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT users_pkey PRIMARY KEY (user_name)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.users
+    OWNER to postgres;
+
 -- Table: public.products
 
 -- DROP TABLE IF EXISTS public.products;
@@ -26,38 +73,6 @@ CREATE TABLE IF NOT EXISTS public.products
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.products
-    OWNER to postgres;
-
--- Table: public.categories
-
--- DROP TABLE IF EXISTS public.categories;
-
-CREATE TABLE IF NOT EXISTS public.categories
-(
-    category_id integer NOT NULL DEFAULT nextval('categories_category_id_seq'::regclass),
-    category character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT categories_pkey PRIMARY KEY (category_id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.categories
-    OWNER to postgres;
-
--- Table: public.users
-
--- DROP TABLE IF EXISTS public.users;
-
-CREATE TABLE IF NOT EXISTS public.users
-(
-    user_name character varying(30) COLLATE pg_catalog."default" NOT NULL,
-    hashed_password character varying(255) COLLATE pg_catalog."default",
-    CONSTRAINT users_pkey PRIMARY KEY (user_name)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.users
     OWNER to postgres;
 
 -- Table: public.ratings
