@@ -1,17 +1,17 @@
--- DROP DATABASE IF EXISTS NogaShop;
--- CREATE DATABASE NogaShop;
+DROP DATABASE IF EXISTS NogaShop;
+CREATE DATABASE NogaShop;
 
-SELECT 
+SELECT
     conname AS constraint_name,
     conrelid::regclass AS table_name,
     a.attname AS column_name,
     confrelid::regclass AS foreign_table_name,
     af.attname AS foreign_column_name
-FROM 
+FROM
     pg_constraint AS c
     JOIN pg_attribute AS a ON a.attnum = ANY(c.conkey)
     JOIN pg_attribute AS af ON af.attnum = ANY(c.confkey)
-WHERE 
+WHERE
     c.contype = 'f';
 
 CREATE SEQUENCE IF NOT EXISTS public.categories_category_id_seq;
