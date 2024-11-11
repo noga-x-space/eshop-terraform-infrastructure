@@ -1,3 +1,6 @@
+-- DROP DATABASE IF EXISTS NogaShop;
+-- CREATE DATABASE NogaShop;
+
 SELECT 
     conname AS constraint_name,
     conrelid::regclass AS table_name,
