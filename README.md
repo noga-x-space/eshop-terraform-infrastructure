@@ -66,6 +66,14 @@ terraform init
 
 Review the resource creation plan:
 
+For Windoes OS-
+
+```bash
+.\dos2unix.exe *
+```
+
+Then, for everyone:
+
 ```bash
 terraform plan
 ```

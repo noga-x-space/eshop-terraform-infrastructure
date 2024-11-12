@@ -1,3 +1,12 @@
+variable "tag-name" {
+  default = "environment"
+}
+
+variable "tag-value" {
+  default = "Production"
+}
+
+
 variable "username" {
   type    = string
   default = ""

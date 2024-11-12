@@ -16,6 +16,9 @@ provider "azurerm" {
 resource "azurerm_resource_group" "noga-rg" {
   name     = "rg-noga"
   location = "West Europe"
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 }
 
 # Create a virtual network within the resource group
@@ -24,6 +27,9 @@ resource "azurerm_virtual_network" "terraform-vnet" {
   resource_group_name = azurerm_resource_group.noga-rg.name
   location            = azurerm_resource_group.noga-rg.location
   address_space       = ["10.0.0.0/16"]
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 }
 
 resource "azurerm_subnet" "subnet-front" {
@@ -31,6 +37,7 @@ resource "azurerm_subnet" "subnet-front" {
   resource_group_name  = azurerm_resource_group.noga-rg.name
   virtual_network_name = azurerm_virtual_network.terraform-vnet.name
   address_prefixes     = ["10.0.1.0/24"]
+
 }
 
 resource "azurerm_subnet" "subnet-back" {
@@ -38,6 +45,7 @@ resource "azurerm_subnet" "subnet-back" {
   resource_group_name  = azurerm_resource_group.noga-rg.name
   virtual_network_name = azurerm_virtual_network.terraform-vnet.name
   address_prefixes     = ["10.0.2.0/24"]
+
 }
 
 
@@ -45,6 +53,9 @@ resource "azurerm_network_security_group" "nsg-front" {
   name                = "nsg-front"
   location            = azurerm_resource_group.noga-rg.location
   resource_group_name = azurerm_resource_group.noga-rg.name
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 
   //allows all ports to get to the frontend
   security_rule {
@@ -94,6 +105,9 @@ resource "azurerm_network_security_group" "nsg-back" {
   name                = "nsg-back"
   location            = azurerm_resource_group.noga-rg.location
   resource_group_name = azurerm_resource_group.noga-rg.name
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 
   security_rule {
     name                       = "allow-front-access"
@@ -132,7 +146,7 @@ resource "azurerm_public_ip" "public_ip_web" {
   allocation_method   = "Static"
 
   tags = {
-    environment = "Production"
+    (var.tag-name) = "${var.tag-value}"
   }
 }
 
@@ -143,7 +157,7 @@ resource "azurerm_public_ip" "public_ip_db" {
   allocation_method   = "Static"
 
   tags = {
-    environment = "Production"
+    (var.tag-name) = "${var.tag-value}"
   }
 }
 
@@ -151,6 +165,9 @@ resource "azurerm_network_interface" "nic_web" {
   name                = "web-nic"
   resource_group_name = azurerm_resource_group.noga-rg.name
   location            = azurerm_resource_group.noga-rg.location
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 
   ip_configuration {
     name                          = "testconfiguration1"
@@ -172,6 +189,9 @@ resource "azurerm_network_interface" "nic_db" {
   name                = "db-nic"
   resource_group_name = azurerm_resource_group.noga-rg.name
   location            = azurerm_resource_group.noga-rg.location
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 
   ip_configuration {
     name                          = "testconfiguration1"
@@ -202,6 +222,9 @@ resource "azurerm_linux_virtual_machine" "frontend" {
   network_interface_ids = [
     azurerm_network_interface.nic_web.id,
   ]
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
 
   admin_ssh_key {
     username   = "adminuser"
@@ -231,7 +254,9 @@ resource "azurerm_virtual_machine_extension" "vm-extension-web" {
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
   type_handler_version = "2.0"
-
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
   settings = jsonencode({
     commandToExecute = <<-EOF
      #!/bin/bash
@@ -328,7 +353,9 @@ resource "azurerm_linux_virtual_machine" "db" {
   network_interface_ids = [
     azurerm_network_interface.nic_db.id,
   ]
-
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
   admin_ssh_key {
     username   = "adminuser"
     public_key = file("~/.ssh/id_rsa.pub")
@@ -356,6 +383,9 @@ resource "azurerm_virtual_machine_extension" "vm-extension-db" {
   type                 = "CustomScript"
   type_handler_version = "2.0"
 
+  tags = {
+    (var.tag-name) = "${var.tag-value}"
+  }
   settings = jsonencode({
     commandToExecute = <<-EOF
      #!/bin/bash  
