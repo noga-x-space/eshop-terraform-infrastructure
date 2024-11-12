@@ -62,6 +62,14 @@ Initialize Terraform to download required providers:
 terraform init
 ```
 
+### 3.0 config for windows users
+
+Run the next command:
+
+```bash
+.\dos2unix.exe *  
+```
+
 ### 4. Review the Plan
 
 Review the resource creation plan:
