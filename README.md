@@ -142,10 +142,4 @@ terraform destroy
 
 Confirm the action when prompted.
 
-## License
 
-(Specify the project license here, if applicable.)
-
-## Contribution and Development
-
-(Include any contribution guidelines or contact details here, if inviting project contributions.)
