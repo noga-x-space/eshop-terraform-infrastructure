@@ -122,9 +122,6 @@ This project provisions the following Azure resources:
   - Database VM in Subnet 2.
 - **PostgreSQL Database**: Installed on the VM in Subnet 2.
 
-## Outputs
-
-(Include outputs here if applicable, describing each one.)
 
 ## Important Notes
 
